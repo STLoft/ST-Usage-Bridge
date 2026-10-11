@@ -1,8 +1,8 @@
-# ST Usage Bridge
+# Usage Bridge
 
-SillyTavern 서버 플러그인입니다. Gemini / Vertex AI에 직접 연결해 답장을 받을 때, 브라우저에서는 볼 수 없는 원본 `usageMetadata`(Input / Output / Thinking / Total 토큰)를 잠시 보관했다가 [ST Message Meta](https://github.com/STLoft/Message-Meta) 확장이 가져가 메시지별로 표시할 수 있게 합니다.
+SillyTavern 서버 플러그인입니다. Gemini / Vertex AI에 직접 연결해 답장을 받을 때, 브라우저에서는 볼 수 없는 원본 `usageMetadata`(Input / Output / Thinking / Total 토큰)를 잠시 보관했다가 [Message Meta](https://github.com/STLoft/Message-Meta) 확장이 가져가 메시지별로 표시할 수 있게 합니다.
 
-다른 연결 방식은 응답에 사용량이 들어 있어 ST Message Meta만으로 표시됩니다. 이 플러그인은 Gemini / Vertex AI 직접 연결에서 상세 사용량을 보고 싶을 때만 설치하면 됩니다.
+다른 연결 방식은 응답에 사용량이 들어 있어 Message Meta만으로 표시됩니다. 이 플러그인은 Gemini / Vertex AI 직접 연결에서 상세 사용량을 보고 싶을 때만 설치하면 됩니다.
 
 ## 설치
 
