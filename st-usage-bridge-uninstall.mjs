@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// This script lives in SillyTavern/plugins/ST-Usage-Bridge.
+// This script lives in the plugin's own folder: SillyTavern/plugins/<folder>.
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const TARGET = path.join(ROOT, 'src', 'endpoints', 'backends', 'chat-completions.js');
 

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// This script lives in SillyTavern/plugins/ST-Usage-Bridge.
+// This script lives in the plugin's own folder: SillyTavern/plugins/<folder>.
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const TARGET = path.join(ROOT, 'src', 'endpoints', 'backends', 'chat-completions.js');
 const BACKUP = TARGET + '.st-usage-backup';
@@ -43,7 +43,7 @@ function fail(message) {
 }
 
 if (!fs.existsSync(TARGET)) {
-    fail(`대상 파일을 찾을 수 없습니다:\n${TARGET}\n\n이 폴더가 SillyTavern/plugins/ST-Usage-Bridge 인지 확인하세요.`);
+    fail(`대상 파일을 찾을 수 없습니다:\n${TARGET}\n\n이 폴더가 SillyTavern/plugins 안에 있는지 확인하세요.`);
 } else {
     let source = fs.readFileSync(TARGET, 'utf8');
 
