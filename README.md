@@ -16,6 +16,12 @@ git clone https://github.com/STLoft/ST-Usage-Bridge plugins/ST-Usage-Bridge && n
 
 Windows PowerShell에서 `&&` 오류가 나면 `&&`를 `;`로 바꿔 실행하세요.
 
+Termux(안드로이드)에서는 SillyTavern 폴더로 먼저 이동한 뒤 같은 명령을 실행합니다. 폴더 위치가 다르면 `~/SillyTavern`만 바꾸세요.
+
+```bash
+cd ~/SillyTavern && git clone https://github.com/STLoft/ST-Usage-Bridge plugins/ST-Usage-Bridge && node plugins/ST-Usage-Bridge/st-usage-bridge-install.mjs
+```
+
 이 명령은 세 가지를 합니다.
 
 - 플러그인을 `plugins/ST-Usage-Bridge`에 받습니다.
@@ -28,11 +34,11 @@ Windows PowerShell에서 `&&` 오류가 나면 `&&`를 `;`로 바꿔 실행하�
 [ST Usage Bridge] v1.3.1 loaded
 ```
 
-`--global` 모드처럼 `config.yaml`이 설치 폴더 밖에 있으면 그 파일에서 `enableServerPlugins: true`로 직접 바꿔 주세요. 이미 폴더를 받아 둔 경우에는 `install_ST_Usage_Bridge.bat`만 실행해도 됩니다.
+`--global` 모드처럼 `config.yaml`이 설치 폴더 밖에 있으면 그 파일에서 `enableServerPlugins: true`로 직접 바꿔 주세요. 이미 폴더를 받아 둔 경우에는 `install_ST_Usage_Bridge.bat`(Termux 등에서는 `node plugins/ST-Usage-Bridge/st-usage-bridge-install.mjs`)만 실행해도 됩니다.
 
 ## 점검
 
-`check_ST_Usage_Bridge.bat`(또는 `node plugins/ST-Usage-Bridge/st-usage-bridge-check.mjs`)를 실행하면 `config.yaml`, 플러그인, UI 확장, 코어 후크 설치 여부를 보여 줍니다.
+`check_ST_Usage_Bridge.bat`(Termux 등에서는 `node plugins/ST-Usage-Bridge/st-usage-bridge-check.mjs`)를 실행하면 `config.yaml`, 플러그인, UI 확장, 코어 후크 설치 여부를 보여 줍니다.
 
 브라우저 개발자도구 Console에서도 확인할 수 있습니다.
 
@@ -44,11 +50,11 @@ fetch('/api/plugins/st-usage-bridge/status').then(r => r.json()).then(console.lo
 
 `plugins/ST-Usage-Bridge` 폴더에서 `git pull` 한 뒤 SillyTavern을 재시작합니다. `config.yaml`의 `enableServerPluginsAutoUpdate`가 켜져 있으면 시작할 때 자동으로 갱신됩니다.
 
-SillyTavern을 업데이트하면 `chat-completions.js`가 교체되어 코어 후크가 사라질 수 있습니다. 상세 사용량이 더 이상 들어오지 않으면 SillyTavern을 종료하고 `install_ST_Usage_Bridge.bat`를 다시 실행하세요.
+SillyTavern을 업데이트하면 `chat-completions.js`가 교체되어 코어 후크가 사라질 수 있습니다. 상세 사용량이 더 이상 들어오지 않으면 SillyTavern을 종료하고 `install_ST_Usage_Bridge.bat`(Termux 등에서는 `node plugins/ST-Usage-Bridge/st-usage-bridge-install.mjs`)를 다시 실행하세요.
 
 ## 제거
 
-SillyTavern을 종료하고 `uninstall_ST_Usage_Bridge.bat`를 실행해 코어 후크를 제거한 뒤 `plugins/ST-Usage-Bridge` 폴더를 삭제합니다.
+SillyTavern을 종료하고 `uninstall_ST_Usage_Bridge.bat`(Termux 등에서는 `node plugins/ST-Usage-Bridge/st-usage-bridge-uninstall.mjs`)를 실행해 코어 후크를 제거한 뒤 `plugins/ST-Usage-Bridge` 폴더를 삭제합니다.
 
 ## 참고
 
