@@ -14,11 +14,19 @@ const dataDir = path.join(ROOT, 'data');
 if (fs.existsSync(dataDir)) {
     for (const user of fs.readdirSync(dataDir)) extDirs.push(path.join(dataDir, user, 'extensions'));
 }
-// The folder is named after the repository; older installs carry the ST- prefix.
-const hasExt = extDirs.some(dir =>
-    ['Message-Meta', 'ST-Message-Meta'].some(name => fs.existsSync(path.join(dir, name, 'index.js'))));
+// The extension folder can have any name, so look for its manifest.
+function isMessageMeta(folder) {
+    try {
+        return JSON.parse(fs.readFileSync(path.join(folder, 'manifest.json'), 'utf8')).display_name === 'Message Meta';
+    } catch {
+        return false;
+    }
+}
 
-console.log('=== ST Usage Bridge 설치 점검 ===');
+const hasExt = extDirs.some(dir =>
+    fs.existsSync(dir) && fs.readdirSync(dir).some(name => isMessageMeta(path.join(dir, name))));
+
+console.log('=== Usage Bridge 설치 점검 ===');
 console.log('config.yaml:', fs.existsSync(config) ? 'OK' : '없음');
 console.log('server plugin:', fs.existsSync(plugin) ? 'OK' : '없음');
 console.log('UI extension:', hasExt ? 'OK' : '없음');
@@ -33,6 +41,6 @@ if (fs.existsSync(target)) {
     const text = fs.readFileSync(target, 'utf8');
     console.log(
         'core hook:',
-        text.includes('/* ST Usage Bridge hook start */') ? 'OK' : '미설치',
+        text.includes('/* Usage Bridge hook start */') ? 'OK' : '미설치',
     );
 }

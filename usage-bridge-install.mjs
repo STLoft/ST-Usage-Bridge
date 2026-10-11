@@ -5,17 +5,17 @@ import { fileURLToPath } from 'node:url';
 // This script lives in the plugin's own folder: SillyTavern/plugins/<folder>.
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const TARGET = path.join(ROOT, 'src', 'endpoints', 'backends', 'chat-completions.js');
-const BACKUP = TARGET + '.st-usage-backup';
+const BACKUP = TARGET + '.usage-bridge-backup';
 
-const START_MARKER = '/* ST Usage Bridge hook start */';
-const END_MARKER = '/* ST Usage Bridge hook end */';
+const START_MARKER = '/* Usage Bridge hook start */';
+const END_MARKER = '/* Usage Bridge hook end */';
 
 const CONFIG = path.join(ROOT, 'config.yaml');
 
 // Server plugins are off by default; turn the switch on so the plugin loads.
 function enableServerPlugins() {
     if (!fs.existsSync(CONFIG)) {
-        console.log('[ST Usage Bridge] config.yaml이 아직 없습니다. SillyTavern을 한 번 실행한 뒤 enableServerPlugins: true 로 바꿔 주세요.');
+        console.log('[Usage Bridge] config.yaml이 아직 없습니다. SillyTavern을 한 번 실행한 뒤 enableServerPlugins: true 로 바꿔 주세요.');
         return;
     }
 
@@ -24,7 +24,7 @@ function enableServerPlugins() {
     const match = config.match(setting);
 
     if (match?.[2] === 'true') {
-        console.log('[ST Usage Bridge] 서버 플러그인이 이미 켜져 있습니다.');
+        console.log('[Usage Bridge] 서버 플러그인이 이미 켜져 있습니다.');
         return;
     }
 
@@ -34,11 +34,11 @@ function enableServerPlugins() {
         : config + (config.endsWith('\n') || !config ? '' : eol) + 'enableServerPlugins: true' + eol;
 
     fs.writeFileSync(CONFIG, updated, 'utf8');
-    console.log('[ST Usage Bridge] config.yaml에서 서버 플러그인을 켰습니다 (enableServerPlugins: true).');
+    console.log('[Usage Bridge] config.yaml에서 서버 플러그인을 켰습니다 (enableServerPlugins: true).');
 }
 
 function fail(message) {
-    console.error('\n[ST Usage Bridge] 설치 실패:', message);
+    console.error('\n[Usage Bridge] 설치 실패:', message);
     process.exitCode = 1;
 }
 
@@ -48,7 +48,7 @@ if (!fs.existsSync(TARGET)) {
     let source = fs.readFileSync(TARGET, 'utf8');
 
     if (source.includes(START_MARKER)) {
-        console.log('[ST Usage Bridge] 이미 코어 후크가 설치되어 있습니다. 변경하지 않았습니다.');
+        console.log('[Usage Bridge] 이미 코어 후크가 설치되어 있습니다. 변경하지 않았습니다.');
     } else {
         const functionStart = source.indexOf('async function sendMakerSuiteRequest(request, response)');
         const functionEnd = source.indexOf('async function sendAI21Request(request, response)', functionStart);
@@ -64,7 +64,7 @@ if (!fs.existsSync(TARGET)) {
             } else {
                 if (!fs.existsSync(BACKUP)) {
                     fs.copyFileSync(TARGET, BACKUP);
-                    console.log('[ST Usage Bridge] 원본 백업 생성:', BACKUP);
+                    console.log('[Usage Bridge] 원본 백업 생성:', BACKUP);
                 }
 
                 const line = match[0];
@@ -74,7 +74,7 @@ if (!fs.existsSync(TARGET)) {
                 const hook = `
 
 ${indent}${START_MARKER}
-${indent}globalThis.__ST_USAGE_BRIDGE_CAPTURE__?.({
+${indent}globalThis.__USAGE_BRIDGE_CAPTURE__?.({
 ${indent}    userHandle: request.user?.profile?.handle,
 ${indent}    usageMetadata: generateResponseJson?.usageMetadata,
 ${indent}    model,
@@ -86,8 +86,8 @@ ${indent}${END_MARKER}`;
                 source = source.slice(0, absolute) + hook + source.slice(absolute);
                 fs.writeFileSync(TARGET, source, 'utf8');
 
-                console.log('[ST Usage Bridge] 코어 후크 설치 완료.');
-                console.log('[ST Usage Bridge] SillyTavern을 재시작하세요.');
+                console.log('[Usage Bridge] 코어 후크 설치 완료.');
+                console.log('[Usage Bridge] SillyTavern을 재시작하세요.');
             }
         }
     }

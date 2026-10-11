@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const TARGET = path.join(ROOT, 'src', 'endpoints', 'backends', 'chat-completions.js');
 
-const START_MARKER = '/* ST Usage Bridge hook start */';
-const END_MARKER = '/* ST Usage Bridge hook end */';
+const START_MARKER = '/* Usage Bridge hook start */';
+const END_MARKER = '/* Usage Bridge hook end */';
 
 if (!fs.existsSync(TARGET)) {
-    console.error('[ST Usage Bridge] 대상 파일을 찾을 수 없습니다:', TARGET);
+    console.error('[Usage Bridge] 대상 파일을 찾을 수 없습니다:', TARGET);
     process.exitCode = 1;
 } else {
     let source = fs.readFileSync(TARGET, 'utf8');
@@ -18,7 +18,7 @@ if (!fs.existsSync(TARGET)) {
     const end = source.indexOf(END_MARKER, start);
 
     if (start < 0 || end < 0) {
-        console.log('[ST Usage Bridge] 설치된 코어 후크가 없습니다.');
+        console.log('[Usage Bridge] 설치된 코어 후크가 없습니다.');
     } else {
         const lineStart = source.lastIndexOf('\n', start);
         const lineEnd = source.indexOf('\n', end + END_MARKER.length);
@@ -30,7 +30,7 @@ if (!fs.existsSync(TARGET)) {
         source = source.slice(0, removeFrom) + source.slice(removeTo);
         fs.writeFileSync(TARGET, source, 'utf8');
 
-        console.log('[ST Usage Bridge] 코어 후크 제거 완료.');
+        console.log('[Usage Bridge] 코어 후크 제거 완료.');
         console.log('플러그인/브라우저 확장 폴더는 필요하면 수동 삭제하세요.');
     }
 }

@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-node st-usage-bridge-check.mjs
+node usage-bridge-check.mjs
 echo.
 pause

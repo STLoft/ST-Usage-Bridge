@@ -1,6 +1,6 @@
 'use strict';
 
-const BRIDGE_GLOBAL = '__ST_USAGE_BRIDGE_CAPTURE__';
+const BRIDGE_GLOBAL = '__USAGE_BRIDGE_CAPTURE__';
 const MAX_QUEUE = 40;
 const ENTRY_TTL_MS = 10 * 60 * 1000;
 
@@ -86,7 +86,7 @@ function capture(payload = {}) {
         queues.set(key, queue);
 
         console.debug(
-            '[ST Usage Bridge] captured:',
+            '[Usage Bridge] captured:',
             key,
             {
                 input: usage.input,
@@ -100,7 +100,7 @@ function capture(payload = {}) {
 
         return true;
     } catch (error) {
-        console.warn('[ST Usage Bridge] capture failed:', error);
+        console.warn('[Usage Bridge] capture failed:', error);
         return false;
     }
 }
@@ -132,8 +132,8 @@ async function init(router) {
 
         res.json({
             ok: true,
-            id: 'st-usage-bridge',
-            version: '1.3.1',
+            id: 'usage-bridge',
+            version: '1.4.0',
             user: key,
             queued: queue.length,
         });
@@ -196,7 +196,7 @@ async function init(router) {
         return res.json({ ok: true });
     });
 
-    console.log('[ST Usage Bridge] v1.3.1 loaded');
+    console.log('[Usage Bridge] v1.4.0 loaded');
 }
 
 async function exit() {
@@ -211,8 +211,8 @@ module.exports = {
     init,
     exit,
     info: {
-        id: 'st-usage-bridge',
-        name: 'ST Usage Bridge',
-        description: 'Bridges Gemini/Vertex token usage metadata to the ST Message Meta UI extension.',
+        id: 'usage-bridge',
+        name: 'Usage Bridge',
+        description: 'Bridges Gemini/Vertex token usage metadata to the Message Meta UI extension.',
     },
 };
