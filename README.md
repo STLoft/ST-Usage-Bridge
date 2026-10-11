@@ -8,33 +8,27 @@ SillyTavern 서버 플러그인입니다. Gemini / Vertex AI에 직접 연결해
 
 SillyTavern을 **완전히 종료한 상태**에서 진행합니다.
 
-1. `SillyTavern/plugins` 폴더에서 이 저장소를 받습니다.
+SillyTavern 최상위 폴더(`Start.bat`가 있는 곳)에서 터미널을 열고 아래 한 줄을 실행합니다.
 
-   ```bash
-   git clone https://github.com/STLoft/ST-Usage-Bridge
-   ```
+```bash
+git clone https://github.com/STLoft/ST-Usage-Bridge plugins/ST-Usage-Bridge && node plugins/ST-Usage-Bridge/st-usage-bridge-install.mjs
+```
 
-   폴더 이름은 `ST-Usage-Bridge` 그대로 둡니다.
+Windows PowerShell에서 `&&` 오류가 나면 `&&`를 `;`로 바꿔 실행하세요.
 
-2. `SillyTavern/config.yaml`에서 서버 플러그인을 켭니다.
+이 명령은 세 가지를 합니다.
 
-   ```yaml
-   enableServerPlugins: true
-   ```
+- 플러그인을 `plugins/ST-Usage-Bridge`에 받습니다.
+- `src/endpoints/backends/chat-completions.js`에 Gemini 응답의 `usageMetadata`를 플러그인으로 넘기는 작은 후크를 추가합니다. 처음 설치할 때 원본을 `chat-completions.js.st-usage-backup`으로 백업하고, 코드 구조가 예상과 다르면 아무것도 바꾸지 않고 멈춥니다.
+- `config.yaml`의 `enableServerPlugins`를 `true`로 바꿉니다. 이미 켜져 있으면 건드리지 않습니다.
 
-3. `plugins/ST-Usage-Bridge/install_ST_Usage_Bridge.bat`를 실행합니다. 터미널에서는 다음과 같습니다.
+그다음 SillyTavern을 다시 실행합니다. 서버 콘솔에 아래 문구가 보이면 로드된 것입니다.
 
-   ```bash
-   node plugins/ST-Usage-Bridge/st-usage-bridge-install.mjs
-   ```
+```text
+[ST Usage Bridge] v1.3.1 loaded
+```
 
-   SillyTavern의 `src/endpoints/backends/chat-completions.js`에 Gemini 응답의 `usageMetadata`를 플러그인으로 넘기는 작은 후크를 추가합니다. 처음 설치할 때 원본을 `chat-completions.js.st-usage-backup`으로 백업하고, 코드 구조가 예상과 다르면 아무것도 바꾸지 않고 멈춥니다.
-
-4. SillyTavern을 다시 실행합니다. 서버 콘솔에 아래 문구가 보이면 로드된 것입니다.
-
-   ```text
-   [ST Usage Bridge] v1.3.1 loaded
-   ```
+`--global` 모드처럼 `config.yaml`이 설치 폴더 밖에 있으면 그 파일에서 `enableServerPlugins: true`로 직접 바꿔 주세요. 이미 폴더를 받아 둔 경우에는 `install_ST_Usage_Bridge.bat`만 실행해도 됩니다.
 
 ## 점검
 

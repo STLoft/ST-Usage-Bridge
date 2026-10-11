@@ -10,6 +10,33 @@ const BACKUP = TARGET + '.st-usage-backup';
 const START_MARKER = '/* ST Usage Bridge hook start */';
 const END_MARKER = '/* ST Usage Bridge hook end */';
 
+const CONFIG = path.join(ROOT, 'config.yaml');
+
+// Server plugins are off by default; turn the switch on so the plugin loads.
+function enableServerPlugins() {
+    if (!fs.existsSync(CONFIG)) {
+        console.log('[ST Usage Bridge] config.yaml이 아직 없습니다. SillyTavern을 한 번 실행한 뒤 enableServerPlugins: true 로 바꿔 주세요.');
+        return;
+    }
+
+    const config = fs.readFileSync(CONFIG, 'utf8');
+    const setting = /^([ \t]*enableServerPlugins[ \t]*:[ \t]*)(true|false)\b/m;
+    const match = config.match(setting);
+
+    if (match?.[2] === 'true') {
+        console.log('[ST Usage Bridge] 서버 플러그인이 이미 켜져 있습니다.');
+        return;
+    }
+
+    const eol = config.includes('\r\n') ? '\r\n' : '\n';
+    const updated = match
+        ? config.replace(setting, '$1true')
+        : config + (config.endsWith('\n') || !config ? '' : eol) + 'enableServerPlugins: true' + eol;
+
+    fs.writeFileSync(CONFIG, updated, 'utf8');
+    console.log('[ST Usage Bridge] config.yaml에서 서버 플러그인을 켰습니다 (enableServerPlugins: true).');
+}
+
 function fail(message) {
     console.error('\n[ST Usage Bridge] 설치 실패:', message);
     process.exitCode = 1;
@@ -65,3 +92,5 @@ ${indent}${END_MARKER}`;
         }
     }
 }
+
+if (!process.exitCode) enableServerPlugins();
